@@ -25,7 +25,7 @@ class LoginController extends Controller
 
         if ($user && Hash::check($request->password, $user->password)) {
             session(['user_id' => $user->id]);
-            return redirect('/dashboard');
+            return redirect()->route('employees.index');
         }
 
         return back()->withErrors(['Invalid credentials']);
