@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Employee;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class EmployeeController extends Controller
 {
@@ -83,4 +84,32 @@ class EmployeeController extends Controller
         return redirect()->route('employees.index')
                          ->with('success', 'Employee deleted successfully!');
     }
+
+     public function summary()
+    {
+        $maleCount = $this->countGender('male');
+        $femaleCount = $this->countGender('female');
+        $averageAge = $this->calculateAverageAge();
+        $totalSalary = $this->calculateTotalSalary();
+
+        return view('employees.summary', compact('maleCount', 'femaleCount', 'averageAge', 'totalSalary'));
+    }
+
+    private function countGender($gender)
+    {
+        return Employee::where('gender', $gender)->count();
+    }
+
+    private function calculateAverageAge()
+    {
+        return Employee::all()->avg(function ($employee) {
+            return Carbon::parse($employee->birthday)->age;
+        });
+    }
+
+    private function calculateTotalSalary()
+    {
+        return Employee::sum('monthly_salary');
+    }
+
 }

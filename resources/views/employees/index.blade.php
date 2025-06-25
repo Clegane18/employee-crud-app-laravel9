@@ -8,14 +8,25 @@
 <body>
     <div class="container">
 
-        <div class="logout-container" style="text-align: right; margin-bottom: 20px;">
-            <button type="button" class="logout-button" onclick="openLogoutModal()">Logout</button>
+        <!-- Action Buttons: Logout, View Summary, Add Employee -->
+        <div class="action-buttons">
+            <div class="left-buttons">
+                <a href="{{ route('employees.create') }}">
+                    <button type="button">Add New Employee</button>
+                </a>
+                <a href="{{ route('employees.summary') }}">
+                    <button type="button">View Summary</button>
+                </a>
+            </div>
+            <div class="right-button">
+                <button type="button" class="logout-button" onclick="openLogoutModal()">Logout</button>
+            </div>
         </div>
 
         <h2>Employee Records</h2>
 
         @if(session('success'))
-            <p style="color: green;">{{ session('success') }}</p>
+            <p class="success-message">{{ session('success') }}</p>
         @endif
 
         <table>
@@ -57,11 +68,6 @@
                 @endforelse
             </tbody>
         </table>
-
-        <br>
-        <a href="{{ route('employees.create') }}">
-            <button type="button">Add New Employee</button>
-        </a>
     </div>
 
     {{-- Delete Confirmation Modal --}}
